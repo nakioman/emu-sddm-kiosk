@@ -11,6 +11,7 @@ Item {
     width: Screen.width
     height: Screen.height
 
+
     FontLoader {
         id: segoeui
         source: Qt.resolvedUrl("fonts/segoeui.ttf")
@@ -111,6 +112,12 @@ Item {
         }
     }
 
+    // Click anywhere to return focus to the list
+    MouseArea {
+        anchors.fill: parent
+        onClicked: kioskGridView.forceActiveFocus()
+    }
+
     // Kiosk entry grid
     Item {
         id: kioskPanel
@@ -138,6 +145,9 @@ Item {
                 currentIndex: 0
                 keyNavigationEnabled: true
 
+                KeyNavigation.tab: powerPanel.firstButton
+                KeyNavigation.backtab: powerPanel.lastButton
+
                 Keys.onReturnPressed: {
                     var entry = kioskModel.get(currentIndex)
                     if (entry) kioskLogin(entry.sessionCommand)
@@ -151,7 +161,7 @@ Item {
                     name: model.name
                     icon: model.icon
                     sessionCommand: model.sessionCommand
-                    isCurrent: ListView.isCurrentItem
+                    isCurrent: ListView.isCurrentItem && kioskGridView.activeFocus
 
                     MouseArea {
                         anchors.fill: parent

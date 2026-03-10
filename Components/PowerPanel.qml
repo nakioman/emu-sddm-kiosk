@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 
 Item {
+    property alias firstButton: shutdownButton
+    property alias lastButton: expandButton
 
     Item {
         id: powerButton
@@ -10,6 +12,9 @@ Item {
 
         Button {
             id: shutdownButton
+
+            KeyNavigation.tab: expandButton
+            KeyNavigation.backtab: kioskGridView
 
             anchors.bottom: parent.bottom
             anchors.left: parent.left
@@ -72,6 +77,9 @@ Item {
 
         Button {
             id: expandButton
+
+            KeyNavigation.tab: kioskGridView
+            KeyNavigation.backtab: shutdownButton
 
             anchors.bottom: parent.bottom
             anchors.left: shutdownButton.right
@@ -152,6 +160,7 @@ Item {
 
         Button {
             id: rebootButton
+
             width: 141
             height: 22
             hoverEnabled: true
@@ -176,6 +185,7 @@ Item {
 
         Button {
             id: poweroffButton
+
             width: 141
             height: 22
             hoverEnabled: true
