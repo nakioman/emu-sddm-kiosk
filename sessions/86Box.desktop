@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=86Box
+Comment=86Box in fullscreen kiosk mode
+Exec=/usr/local/bin/kiosk-86box.sh
+Type=Application

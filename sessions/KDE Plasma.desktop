@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=KDE Plasma
+Comment=KDE Plasma Desktop
+Exec=/usr/bin/startplasma-x11
+Type=Application
