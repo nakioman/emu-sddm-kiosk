@@ -62,13 +62,36 @@ Item {
         delegate: Item {
             Component.onCompleted: {
                 var baseName = model.fileBaseName
+                var fileName = model.fileName
+                var fileUrl = sessionFolderModel.folder + "/" + fileName
+                parseDesktopFile(fileUrl, baseName)
+            }
+        }
+    }
+
+    function parseDesktopFile(fileUrl, baseName) {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                var displayName = baseName
+                if (xhr.responseText !== "") {
+                    var lines = xhr.responseText.split("\n")
+                    for (var i = 0; i < lines.length; i++) {
+                        if (lines[i].indexOf("Name=") === 0) {
+                            displayName = lines[i].substring(5).trim()
+                            break
+                        }
+                    }
+                }
                 kioskModel.append({
-                    name: baseName,
+                    name: displayName,
                     icon: Qt.resolvedUrl("Assets/" + baseName + ".png").toString(),
                     sessionCommand: baseName
                 })
             }
         }
+        xhr.open("GET", fileUrl)
+        xhr.send()
     }
 
     function kioskLogin(sessionCommand) {
