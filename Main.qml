@@ -120,7 +120,7 @@ Item {
             width: 180 * Math.min(kioskGridView.count, 5)
             height: 125
             color: "transparent"
-            clip: true
+            clip: false
 
             anchors {
                 horizontalCenter: parent.horizontalCenter
@@ -134,15 +134,29 @@ Item {
                 orientation: ListView.Horizontal
                 interactive: false
                 spacing: 120
+                focus: true
+                currentIndex: 0
+                keyNavigationEnabled: true
+
+                Keys.onReturnPressed: {
+                    var entry = kioskModel.get(currentIndex)
+                    if (entry) kioskLogin(entry.sessionCommand)
+                }
+                Keys.onEnterPressed: {
+                    var entry = kioskModel.get(currentIndex)
+                    if (entry) kioskLogin(entry.sessionCommand)
+                }
 
                 delegate: KioskEntry {
                     name: model.name
                     icon: model.icon
                     sessionCommand: model.sessionCommand
+                    isCurrent: ListView.isCurrentItem
 
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
+                            kioskGridView.currentIndex = index
                             kioskLogin(model.sessionCommand)
                         }
                     }

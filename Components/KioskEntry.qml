@@ -9,6 +9,7 @@ Rectangle {
     property alias name: name.text
     property alias icon: icon.source
     property string sessionCommand: ""
+    property bool isCurrent: false
 
     width: 60
     height: 64
@@ -19,6 +20,12 @@ Rectangle {
         id: containerarea
         anchors.fill: parent
         hoverEnabled: true
+        onContainsMouseChanged: {
+            if (containsMouse) {
+                var lv = container.ListView.view
+                if (lv) lv.currentIndex = index
+            }
+        }
     }
 
     Image {
@@ -32,9 +39,9 @@ Rectangle {
         }
 
         source: {
-            if (containerarea.containsMouse && container.focus) return "../Assets/list-hover-focus.png"
-            if (containerarea.containsMouse && !container.focus) return "../Assets/list-hover.png"
-            if (!containerarea.containsMouse && container.focus) return "../Assets/list-focus.png"
+            if (containerarea.containsMouse && isCurrent) return "../Assets/list-hover-focus.png"
+            if (containerarea.containsMouse) return "../Assets/list-hover.png"
+            if (isCurrent) return "../Assets/list-focus.png"
 
             return "../Assets/list.png"
         }
