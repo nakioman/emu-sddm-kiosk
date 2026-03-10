@@ -44,10 +44,13 @@ Item {
         }
     }
 
-    // Scan sessions/ folder for .desktop files
+    // Scan sessions folder for .desktop files
+    // Supports absolute paths or relative to the theme directory
     FolderListModel {
         id: sessionFolderModel
-        folder: Qt.resolvedUrl("sessions")
+        folder: config.sessions_path.indexOf("/") === 0
+            ? "file://" + config.sessions_path
+            : Qt.resolvedUrl(config.sessions_path)
         nameFilters: ["*.desktop"]
         showDirs: false
         sortField: FolderListModel.Name
