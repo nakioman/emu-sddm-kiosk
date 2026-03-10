@@ -74,18 +74,21 @@ Item {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 var displayName = baseName
+                var comment = ""
                 if (xhr.responseText !== "") {
                     var lines = xhr.responseText.split("\n")
                     for (var i = 0; i < lines.length; i++) {
                         if (lines[i].indexOf("Name=") === 0) {
                             displayName = lines[i].substring(5).trim()
-                            break
+                        } else if (lines[i].indexOf("Comment=") === 0) {
+                            comment = lines[i].substring(8).trim().replace(/\\n/g, "\n")
                         }
                     }
                 }
                 kioskModel.append({
                     name: displayName,
-                    icon: Qt.resolvedUrl("Assets/" + baseName + ".png").toString(),
+                    comment: comment,
+                    icon: Qt.resolvedUrl("Icons/" + displayName + ".png").toString(),
                     sessionCommand: baseName
                 })
             }
